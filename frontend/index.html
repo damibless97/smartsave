@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSave Contribution App</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Login Screen (initially visible) -->
+        <div id="login-screen" class="screen">
+            <div class="auth-container">
+                <h1>Welcome to SmartSave</h1>
+                <form id="login-form">
+                    <div class="form-group">
+                        <input type="text" id="username" placeholder="Email or Phone" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Login</button>
+                </form>
+                <p class="auth-link" id="show-signup">Don't have an account? Sign Up</p>
+                <p class="auth-link" id="forgot-password">Forgot Password?</p>
+            </div>
+        </div>
+
+        <!-- Signup Screen -->
+        <div id="signup-screen" class="screen hidden">
+            <div class="auth-container">
+                <h1>Create Account</h1>
+                <form id="signup-form">
+                    <div class="form-group">
+                        <input type="text" id="signup-email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="signup-phone" placeholder="Phone Number" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="signup-password" placeholder="Password" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="signup-confirm" placeholder="Confirm Password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Sign Up</button>
+                </form>
+                <p class="auth-link" id="show-login">Already have an account? Login</p>
+            </div>
+        </div>
+
+        <!-- Main App Screens -->
+        <div id="app-screens" class="hidden">
+            <!-- Header -->
+            <header class="app-header">
+                <div class="header-content">
+                    <h1 id="user-greeting">Hi User</h1>
+                    <p id="current-date"></p>
+                </div>
+                <button id="logout-btn" class="icon-btn">
+                    <span class="material-icons">logout</span>
+                </button>
+            </header>
+
+            <!-- Navigation -->
+            <nav class="bottom-nav">
+                <button class="nav-btn active" data-screen="dashboard">
+                    <span class="material-icons">home</span>
+                    <span>Home</span>
+                </button>
+                <button class="nav-btn" data-screen="wallet">
+                    <span class="material-icons">account_balance_wallet</span>
+                    <span>Wallet</span>
+                </button>
+                <button class="nav-btn" data-screen="history">
+                    <span class="material-icons">history</span>
+                    <span>History</span>
+                </button>
+                <button class="nav-btn" data-screen="support">
+                    <span class="material-icons">support</span>
+                    <span>Support</span>
+                </button>
+            </nav>
+
+            <!-- Dashboard Screen -->
+            <div id="dashboard-screen" class="app-screen">
+                <div class="status-banner">
+                    <p>Your daily contribution is complete</p>
+                </div>
+
+                <div class="card-row">
+                    <div class="card">
+                        <p class="card-label">Total Contributed</p>
+                        <p class="card-value" id="total-contributed">$0</p>
+                    </div>
+                    <div class="card">
+                        <p class="card-label">Last Payment</p>
+                        <p class="card-value" id="last-payment">$0</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <p class="card-label">Current Balance</p>
+                    <p class="card-value" id="current-balance">$0</p>
+                </div>
+
+                <button id="view-history" class="btn-secondary">
+                    View Daily Record
+                </button>
+
+                <div class="plan-panel">
+                    <h2>Select Contribution Plan</h2>
+                    <select id="plan-select" class="form-control">
+                        <option value="">Select a plan</option>
+                    </select>
+                    <button id="save-plan" class="btn-primary">Save Plan</button>
+                </div>
+            </div>
+
+            <!-- Wallet Screen -->
+            <div id="wallet-screen" class="app-screen hidden">
+                <div class="wallet-card">
+                    <p class="wallet-label">Main Wallet Balance</p>
+                    <p class="wallet-amount" id="main-balance">$3,000</p>
+                </div>
+
+                <div class="wallet-card locked">
+                    <p class="wallet-label">Daily Wallet (Locked)</p>
+                    <p class="wallet-amount" id="daily-balance">$1,250</p>
+                    <p class="wallet-info">Locked until end of month</p>
+                </div>
+
+                <button id="fund-wallet" class="btn-primary">
+                    <span class="material-icons">add</span> Fund Wallet
+                </button>
+
+                <button id="transfer-wallet" class="btn-primary">
+                    <span class="material-icons">sync</span> Transfer to Daily Wallet
+                </button>
+
+                <button id="view-transactions" class="btn-secondary">
+                    <span class="material-icons">list</span> Transaction History
+                </button>
+            </div>
+
+            <!-- History Screen -->
+            <div id="history-screen" class="app-screen hidden">
+                <h2>Contribution History</h2>
+                <div class="month-selector">
+                    <button id="prev-month"><</button>
+                    <h3 id="current-month">July 2023</h3>
+                    <button id="next-month">></button>
+                </div>
+                <div class="history-summary">
+                    <p>Total: <span id="month-total">$0</span></p>
+                    <p>Days: <span id="days-contributed">0</span>/<span id="month-days">30</span></p>
+                </div>
+                <div id="history-list" class="history-list">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Support Screen -->
+            <div id="support-screen" class="app-screen hidden">
+                <h2>Support Center</h2>
+                <div class="support-info">
+                    <p><span class="material-icons">email</span> support@smartsave.com</p>
+                    <p><span class="material-icons">phone</span> +1 (234) 567-8900</p>
+                    <p><span class="material-icons">schedule</span> 9AM - 5PM, Mon-Fri</p>
+                </div>
+                <button id="whatsapp-support" class="btn-primary">
+                    <span class="material-icons">chat</span> Chat on WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Register service worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
